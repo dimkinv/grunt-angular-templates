@@ -26,6 +26,7 @@ module.exports = function(grunt) {
       htmlmin:    {},
       module:     this.target,
       prefix:     '',
+      removePrefixLength: 0,
       source:     function(source) { return source; },
       standalone: false,
       url:        function(path) { return path; },
@@ -54,10 +55,10 @@ module.exports = function(grunt) {
         grunt.log.writeln('File ' + file.dest.cyan + ' updated.');
       }
       else{
-        grunt.file.write(file.dest, compiled.join('\n'));  
+        grunt.file.write(file.dest, compiled.join('\n'));
         grunt.log.writeln('File ' + file.dest.cyan + ' created.');
       }
-      
+
 
       if (options.usemin) {
         if (appender.save('generated', appender.concatUseminFiles(options.usemin, file))) {

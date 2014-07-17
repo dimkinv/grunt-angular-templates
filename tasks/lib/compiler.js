@@ -36,7 +36,7 @@ var Compiler = function(grunt, options, cwd) {
    * @param  {String} url       URL to act as template ID
    * @return {String}           Template wrapped in `$templateCache.put(...)`
    */
-  this.cache = function(template, url, prefix) {
+  this.cache = function(template, url, prefix, removePrefixLength) {
     var path = prefix;
 
     // Force trailing slash
@@ -45,7 +45,14 @@ var Compiler = function(grunt, options, cwd) {
     }
 
     // Append formatted URL
-    path += Url.format( Url.parse( url.replace(/\\/g, '/') ) );
+    var formatedUrl = Url.format( Url.parse( url.replace(/\\/g, '/') ) );
+
+    //removing characters from beginning of the url
+    if(typeof removePrefixLength === 'number' && removePrefixLength > 0) {
+      formatedUrl.splice(0, removePrefixLength);
+    }
+
+    path += formatedUrl;
 
     return "\n  $templateCache.put('" + path + "',\n    " + template + "\n  );\n";
   };
@@ -76,7 +83,7 @@ var Compiler = function(grunt, options, cwd) {
       }.bind(this))
       .map(this.stringify)
       .map(function(string, i) {
-        return this.cache(string, this.url(files[i]), options.prefix);
+        return this.cache(string, this.url(files[i]), options.prefix, options.removePrefixLength);
       }.bind(this))
       .map(grunt.util.normalizelf)
       .join(grunt.util.linefeed)
