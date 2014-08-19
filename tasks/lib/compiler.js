@@ -49,7 +49,7 @@ var Compiler = function(grunt, options, cwd) {
 
     //removing characters from beginning of the url
     if(typeof removePrefixLength === 'number' && removePrefixLength > 0) {
-      formatedUrl.splice(0, removePrefixLength);
+      formatedUrl.substring(removePrefixLength);
     }
 
     path += formatedUrl;
